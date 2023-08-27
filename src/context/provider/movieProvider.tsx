@@ -7,19 +7,19 @@ import { endpoints } from "@/constants/endpoints";
 type Props = { children: React.ReactNode };
 
 const MovieProvider = ({ children }: Props) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [moviess, setMoviess] = useState<any>({});
-  const [query, setQuery] = useState<string>("")
+  const [query, setQuery] = useState<string>("titanic")
   
 
   const getMovies = async () => {
     try {
-      await axios.get(endpoints.movies).then((res) => {
+      await axios.get(endpoints.movies(query)).then((res) => {
         setMoviess(res.data);
         
       });
-    } catch (err) {
-      console.log("error: ", err);
+    } catch (Error) {
+      console.log("error: ", Error);
     }
   };
   console.log(query.length);
@@ -29,32 +29,14 @@ const MovieProvider = ({ children }: Props) => {
   }
 
   useEffect(() => {
-    getMovies();
-    
-  }, []);
-
-  const searchMovie = async() => {
-    try {
-      await axios.get(endpoints.movieSearch(query)).then((res) => {
-        setMoviess(res.data);
-      });
-    } catch (err) {
-      console.log("error: ", err);
+    const clearTime = setTimeout(()=>{
+      getMovies();
+      setIsLoading(true)
+    },800)
+    return () =>{
+      clearTimeout(clearTime)
     }
-  }
-
-  // {query.length>0 ? 
-  //   useEffect(() => {
-  //   searchMovie();
-  // }, [query])
-  // : ""}
-
-
-  if(query.length>0){
-    useEffect(() => {
-      searchMovie();
-    }, [query]);
-  }
+  }, [query]);
 
   const MovieValue: MovieDataType = {
     isLoading,

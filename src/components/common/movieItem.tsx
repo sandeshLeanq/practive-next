@@ -1,6 +1,6 @@
 "use client";
-import { MovieType } from '@/types/movie-type';
 import React, { useContext } from 'react'
+import { MovieType } from '@/types/movie-type';
 
 export default function MovieList(props:MovieType) {
   return (

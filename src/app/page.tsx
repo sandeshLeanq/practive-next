@@ -8,7 +8,7 @@ import Header from '@/components/common/header';
 import Search from '@/components/common/search';
 
 export default function Home() {
-  const {moviess} = useContext(MovieContext)
+  const {moviess, isLoading} = useContext(MovieContext)
   console.log(moviess.Search);
   
   let newMovies = [];
@@ -18,7 +18,8 @@ export default function Home() {
       return <MovieList key={movie.Year} {...movie} />
     })
   }
-
+  console.log(newMovies);
+  
   return(
     <main className={styles.main}>
       <div className="px-14 pb-10 w-full flex items-center justify-between">
@@ -26,9 +27,8 @@ export default function Home() {
         <Search/>
       </div>
         <div className="grid grid-cols-4 gap-6">
-          {
-            newMovies
-          }
+          {isLoading ? newMovies : "Loding..."}
+         
         </div>
     </main>
   )
